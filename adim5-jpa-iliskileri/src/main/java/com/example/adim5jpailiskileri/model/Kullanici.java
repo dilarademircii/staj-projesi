@@ -1,11 +1,17 @@
 package com.example.adim5jpailiskileri.model;
 
 import jakarta.persistence.*;
-import java.util.ArrayList;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 @Entity
 @Table(name = "kullanicilar")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Kullanici {
 
     @Id
@@ -15,50 +21,9 @@ public class Kullanici {
     private String ad;
     private String soyad;
 
-    // FetchType.LAZY -> Siparişler sadece istendiğinde yüklensin (performans için)
-    // CascadeType.ALL -> Kullanıcı silinirse ona ait siparişler de otomatik silinsin
-    @OneToMany(mappedBy = "kullanici", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Siparis> siparisler = new ArrayList<>();
+    @Column(nullable = false)
+    private String eposta; // Bu alanı ekliyoruz
 
-    // Parametresiz yapıcı metot (JPA için şarttır)
-    public Kullanici() {}
-
-    // Parametreli yapıcı metot
-    public Kullanici(String ad, String soyad) {
-        this.ad = ad;
-        this.soyad = soyad;
-    }
-
-    // Getter ve Setter Metotları
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getAd() {
-        return ad;
-    }
-
-    public void setAd(String ad) {
-        this.ad = ad;
-    }
-
-    public String getSoyad() {
-        return soyad;
-    }
-
-    public void setSoyad(String soyad) {
-        this.soyad = soyad;
-    }
-
-    public List<Siparis> getSiparisler() {
-        return siparisler;
-    }
-
-    public void setSiparisler(List<Siparis> siparisler) {
-        this.siparisler = siparisler;
-    }
+    @OneToMany(mappedBy = "kullanici", cascade = CascadeType.ALL)
+    private List<Siparis> siparisler;
 }
